@@ -1,25 +1,37 @@
 import http from 'http';
 import { createWorker } from 'tesseract.js';
+import { configManager } from './configManager';
+import { cloneGit } from './gitManager';
 
-const hostname = '127.0.0.1';
-const port = 3000;
+console.log("\n *STARTING* \n");
+const configManagerSession = new configManager();
+const config = configManagerSession.config;
+
+cloneGit();
 
 const server = http.createServer((req: any, res: any) => {
+  console.log("IMPACT");
+
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  bob().then(el => res.end('>>>>' + el));
+
+  imageRecognition()
+    .catch(err => {
+      res.end(JSON.stringify(err, null, 2));
+      console.error(err);
+    })
+    .then(el => res.end(el));
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-  
+server.listen(config.port, config.hostname, () => {
+  console.log(`Server running at http://${config.hostname}:${config.port}/`);
 });
 
-async function  bob (){
+async function imageRecognition() {
   await worker.load();
   await worker.loadLanguage('eng');
   await worker.initialize('eng');
-  const { data: { text } } = await worker.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png');
+  const { data: { text } } = await worker.recognize(config.imgUrl);
   worker.terminate();
   return text;
 }
