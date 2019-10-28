@@ -1,7 +1,7 @@
 import http from 'http';
 import { configManager } from './configManager';
 import { cloneGit } from './gitManager';
-import ocrProcess from './ocrProcess';
+import ocrProcessForSingleImg from './ocrProcess';
 
 process.on('uncaughtException', function (error) {
     console.log(error);
@@ -12,7 +12,7 @@ const configManagerSession = new configManager();
 const config = configManagerSession.config;
 
 // cloneGit();
-ocrProcess("/home/mika/Schreibtisch/tmp/tmp.jpg");
+ocrProcessForSingleImg("/home/mika/Schreibtisch/tmp/tmp.jpg");
 
 // const server = http.createServer((req: any, res: any) => {
 //   console.log("IMPACT");

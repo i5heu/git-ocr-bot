@@ -2,7 +2,7 @@ import ocrImage from "./ocr";
 import fs from "fs";
 import path from "path";
 
-export default async function ocrProcess(pathToImg: string) {
+export default async function ocrProcessForSingleImg(pathToImg: string) {
     try {
         await ocrProcessThing(pathToImg);
     } catch (error) {
