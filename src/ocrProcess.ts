@@ -11,15 +11,7 @@ export default async function ocrProcess(pathToImg: string) {
 }
 
 async function ocrProcessThing(pathToImg: string) {
-    console.log("PPPP", fs.existsSync(pathToImg));
-
-    if (!fs.existsSync(pathToImg)) {
-        throw new Error("Img not found");
-        console.log("FUCK");
-        return;
-    }
-
-    console.log("PPPP");
+    if (!fs.existsSync(pathToImg)) throw new Error("Img not found");
 
     const newPath = generateNewPathForFolder(pathToImg);
     if (fs.existsSync(newPath)) throw new Error("Folder already exists!");

@@ -1,6 +1,9 @@
 
 import { createWorker } from 'tesseract.js';
 
+/**
+ *  TODO: convert img to black and white img (for better recognition)
+ */
 export default async function ocrImage(url: string){
   const foo = await imageRecognition(url);
   return foo;
