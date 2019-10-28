@@ -1,14 +1,15 @@
 
 import { createWorker } from 'tesseract.js';
 
-async function ocrImage(url: string){
+export default async function ocrImage(url: string){
   const foo = await imageRecognition(url);
+  return foo;
 }
 
 async function imageRecognition(url: string) {
   await worker.load();
-  await worker.loadLanguage('eng');
-  await worker.initialize('eng');
+  await worker.loadLanguage('deu');
+  await worker.initialize('deu');
   //TODO check if url can be blob or file path
   const { data: { text } } = await worker.recognize(url);
   worker.terminate();
