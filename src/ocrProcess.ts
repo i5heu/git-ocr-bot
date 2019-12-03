@@ -3,28 +3,28 @@ import fs from "fs";
 import path from "path";
 
 export default async function ocrProcessForSingleImg(pathToImg: string) {
-    try {
-        await ocrProcessThing(pathToImg);
-    } catch (error) {
-        console.log("ERROR:", error);
-    }
+  try {
+    await ocrProcessThing(pathToImg);
+  } catch (error) {
+    console.log("ERROR:", error);
+  }
 }
 
 async function ocrProcessThing(pathToImg: string) {
-    if (!fs.existsSync(pathToImg)) throw new Error("Img not found");
+  if (!fs.existsSync(pathToImg)) throw new Error("Img not found");
 
-    const newPath = generateNewPathForFolder(pathToImg);
-    if (fs.existsSync(newPath)) throw new Error("Folder already exists!");
+  const newPath = generateNewPathForFolder(pathToImg);
+  if (fs.existsSync(newPath)) throw new Error("Folder already exists!");
 
-    fs.mkdirSync(newPath);
+  fs.mkdirSync(newPath);
 
-    // create new folder
-    const newImgPath = await moveImgIntoFolder(pathToImg, newPath);
+  // create new folder
+  const newImgPath = await moveImgIntoFolder(pathToImg, newPath);
 
-    const ocrText = await ocrImage(newImgPath);
-    console.log("OCR:::", ocrText);
+  const ocrText = await ocrImage(newImgPath);
+  console.log("OCR:::", ocrText);
 
-    await writeTextFileIntoFolder(ocrText, newPath + "/ocrText.txt");
+  await writeTextFileIntoFolder(ocrText, newPath + "/ocrText.txt");
 }
 
 /**
@@ -34,19 +34,17 @@ async function ocrProcessThing(pathToImg: string) {
  * @param {string} pathToImg
  * @param {string} pathOfFolder
  */
-async function moveImgIntoFolder(pathToImg: string, pathOfFolder: string): Promise<string> {
-    return new Promise(
-        (resolve, reject) => {
-            const fileName = path.basename(pathToImg);
-            const newImgPath = pathOfFolder + "/" + fileName;
-            fs.rename(pathToImg,
-                newImgPath,
-                () => {
-                    resolve(newImgPath);
-                }
-            );
-        }
-    );
+async function moveImgIntoFolder(
+  pathToImg: string,
+  pathOfFolder: string
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const fileName = path.basename(pathToImg);
+    const newImgPath = pathOfFolder + "/" + fileName;
+    fs.rename(pathToImg, newImgPath, () => {
+      resolve(newImgPath);
+    });
+  });
 }
 
 /**
@@ -57,25 +55,24 @@ async function moveImgIntoFolder(pathToImg: string, pathOfFolder: string): Promi
  * @param {string} pathOfFolder
  */
 async function writeTextFileIntoFolder(text: string, newFilePath: string) {
-    new Promise(
-        (resolve, reject) => {
-            fs.writeFile(newFilePath, text, function (err) {
+  new Promise((resolve, reject) => {
+    fs.writeFile(newFilePath, text, function(err) {
+      if (err) {
+        reject(err);
+        return;
+      }
 
-                if (err) {
-                    reject(err);
-                    return;
-                }
-
-                resolve();
-            });
-        }
-    );
+      resolve();
+    });
+  });
 }
 
-
 function generateNewPathForFolder(pathToImg: string) {
-    let newPath = path.dirname(pathToImg);
-    newPath += "/";
-    newPath += path.basename(pathToImg).split(".").join("-");
-    return newPath;
+  let newPath = path.dirname(pathToImg);
+  newPath += "/";
+  newPath += path
+    .basename(pathToImg)
+    .split(".")
+    .join("-");
+  return newPath;
 }

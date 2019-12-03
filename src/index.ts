@@ -1,10 +1,10 @@
-import http from 'http';
-import { configManager } from './configManager';
-import { cloneGit } from './gitManager';
-import ocrProcessForSingleImg from './ocrProcess';
+import http from "http";
+import { configManager } from "./configManager";
+import { cloneGit } from "./gitManager";
+import ocrProcessForSingleImg from "./ocrProcess";
 
-process.on('uncaughtException', function (error) {
-    console.log(error);
+process.on("uncaughtException", function(error) {
+  console.log(error);
 });
 
 console.log("\n *STARTING* \n");
@@ -20,10 +20,8 @@ ocrProcessForSingleImg("/home/mika/Schreibtisch/tmp/tmp.jpg");
 //   res.statusCode = 200;
 //   res.setHeader('Content-Type', 'text/plain');
 
-
 // });
 
 // server.listen(config.port, config.hostname, () => {
 //   console.log(`Server running at http://${config.hostname}:${config.port}/`);
 // });
-
